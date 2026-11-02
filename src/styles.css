@@ -1,0 +1,16 @@
+@import "tailwindcss";
+@source "../public/*.{html,js}";
+
+@theme { --font-sans: "Segoe UI", "Helvetica Neue", Arial, sans-serif; }
+:root { color-scheme: light dark; }
+body { background-image: radial-gradient(ellipse at top right, rgb(16 185 129 / 0.045), transparent 65%); }
+.eyebrow { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; }
+.news-card:first-child { background-color: #edf2e9; border-color: #e1e8dc; }
+.news-card:nth-child(2) { background-color: #f2eee8; border-color: #e9e3da; }
+.tile-initial { display: grid; place-items: center; width: 3rem; height: 3rem; border-radius: 0.75rem; background: #e4eae1; color: #426043; font-size: 1.5rem; font-weight: 600; }
+a:focus-visible, .search-box:focus-within { outline: 3px solid #059669; outline-offset: 4px; }
+@media (prefers-color-scheme: dark) {
+  .news-card:first-child { background-color: #202a22; border-color: #303e32; }
+  .news-card:nth-child(2) { background-color: #2b2722; border-color: #40382e; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; transform: none !important; } }

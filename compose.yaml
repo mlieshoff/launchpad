@@ -1,0 +1,32 @@
+services:
+  landing:
+    build: .
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    volumes:
+      - ./public/config.json:/app/public/config.json:ro
+      - ./public/images:/app/public/images:ro
+  traefik:
+    image: traefik:v3.6
+    restart: unless-stopped
+    depends_on:
+      landing:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:8443:8443"
+    command:
+      - --entrypoints.web.address=:8080
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
+      - --entrypoints.web.http.redirections.entrypoint.permanent=true
+      - --entrypoints.websecure.address=:8443
+      - --providers.file.filename=/etc/traefik/dynamic.yaml
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    volumes:
+      - ./traefik/dynamic.yaml:/etc/traefik/dynamic.yaml:ro
+      - ./certs:/certs:ro

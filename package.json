@@ -1,0 +1,16 @@
+{
+  "name": "launchpad",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "build": "tailwindcss -i src/styles.css -o public/styles.css --minify",
+    "start": "node server.js",
+    "test": "node --test test/*.test.js"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "4.1.18",
+    "tailwindcss": "4.1.18"
+  }
+}
