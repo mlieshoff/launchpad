@@ -1,0 +1,10 @@
+.git
+.ai
+.idea
+AGENTS.md
+node_modules
+certs
+artifacts
+test
+README.md
+.tool-cache

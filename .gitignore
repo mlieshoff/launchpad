@@ -24,3 +24,9 @@ hs_err_pid*
 replay_pid*
 
 .idea
+# Landing page build and local TLS material
+node_modules/
+public/styles.css
+certs/*
+artifacts/
+.tool-cache/
