@@ -41,12 +41,34 @@ docker compose down
 
 Edit `public/config.json`. `news` and `tiles` are arrays, including empty arrays. Add or remove entries freely. Every entry needs `title` and an absolute HTTP(S) `url`; `text` is optional. News also supports `label` and `date` (display text). Tiles optionally use `image`, a local path such as `/images/my-icon.svg`; place the image in `public/images/`. A tile without an image displays its title’s first character.
 
-The top-level `brand`, `eyebrow`, `heading`, `intro`, and `footer` strings customize the page copy. Content is rendered as plain text, never HTML. Invalid configuration produces a visible error instead of unsafe or partially rendered links. The bundled icons are simple local prototype illustrations.
+The top-level `brand`, `eyebrow`, `heading`, `intro`, and `footer` strings customize the main page copy. All remaining page text is in `texts`: page title and description, header tagline, section headings, search label and placeholder, empty/loading/error/no-JavaScript messages, footer note, news defaults, link accessibility labels, count templates, and decorative symbols. Edit the supplied strings directly; an empty string hides that text. Missing optional strings render empty. `language` sets the HTML language and `dateLocale` controls the displayed date (for example `de-DE`); an empty `dateLocale` hides the date. `tileCountOne` is used for one matching tile, otherwise `tileCount`; both support `{count}`. `openLinkLabel` supports `{title}`.
+
+To group tiles, define an optional `groups` array and set each tile's `group` to a matching ID:
+
+```json
+{
+  "news": [],
+  "texts": { "ungroupedTitle": "Other links" },
+  "groups": [
+    { "id": "work", "title": "Work & tools" },
+    { "id": "learn", "title": "Learning" }
+  ],
+  "tiles": [
+    { "title": "GitHub", "url": "https://github.com", "group": "work" },
+    { "title": "MDN", "url": "https://developer.mozilla.org", "group": "learn" },
+    { "title": "Wikipedia", "url": "https://www.wikipedia.org" }
+  ]
+}
+```
+
+Groups appear in array order, with tiles in their original order. Tiles without `group` appear last under `texts.ungroupedTitle` (leave it empty for no heading). Existing configurations without groups still work. Group IDs must be unique and titles nonempty; unknown group references are rejected. Search filters titles and descriptions across all groups, hides groups without matches, and counts all matching tiles.
+
+Content is rendered as plain text, never HTML. The Node server fills initial HTML text from JSON, including loading, error, and no-JavaScript copy. Invalid content produces the configured error instead of unsafe or partially rendered links. If JSON itself cannot be parsed or read, the initial page returns HTTP 500 because its configured messages are unavailable. The bundled icons are simple local prototype illustrations.
 
 Refresh after editing content. Docker mounts JSON and images read-only, so no image rebuild is needed for content changes. If an editor replaces the JSON file atomically and changes do not appear in Docker, run `docker compose up -d --force-recreate landing` to refresh the file mount. Application/style changes need `docker compose up --build -d`.
 
 ## Verification and workflow
 
-`npm test` covers configuration contracts and actual HTTP responses, including unsafe links, traversal, missing files, methods, and security headers. There is no Java code or Maven project: Node/Tailwind was explicitly requested. Browser and container verification results are reported at handover; this README does not imply they passed.
+`npm test` covers configuration contracts, grouping/filtering, configurable text, HTML escaping, application rendering with a small DOM double, and actual HTTP responses, including unsafe links, traversal, missing files, methods, and security headers. There is no Java code or Maven project: Node/Tailwind was explicitly requested. Browser and container verification results are reported at handover; this README does not imply they passed.
 
 Work is on a local feature branch under the approved exception to the GitHub lifecycle. GitHub story/task issues and PR remain deferred; no release or deployment is performed by the agent.

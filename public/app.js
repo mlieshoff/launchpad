@@ -1,4 +1,4 @@
-import { validateConfig } from './config.js';
+import { validateConfig, filterTileGroups, formatText } from './config.js';
 
 const element = (tag, className, text) => {
   const node = document.createElement(tag);
@@ -15,7 +15,7 @@ function link(url, className) {
   node.rel = 'noopener noreferrer';
   return node;
 }
-function renderTile(tile) {
+function renderTile(tile, texts) {
   const card = link(tile.url, `${linkClass} flex flex-col p-6`);
   const top = element('div', 'mb-7 flex items-center justify-between');
   if (tile.image) {
@@ -26,40 +26,51 @@ function renderTile(tile) {
     image.loading = 'lazy';
     top.append(image);
   } else top.append(element('span', 'tile-initial', tile.title.slice(0, 1)));
-  top.append(element('span', 'text-xl text-stone-400 transition group-hover:text-emerald-600', '↗'));
+  top.append(element('span', 'text-xl text-stone-400 transition group-hover:text-emerald-600', texts.linkIcon || ''));
   card.append(top, element('h3', 'text-lg font-semibold tracking-tight', tile.title), element('p', 'mb-6 mt-2 flex-1 text-sm leading-relaxed text-stone-500 dark:text-stone-400', tile.text || ''), element('span', 'text-xs text-stone-400 dark:text-stone-500', new URL(tile.url).hostname));
-  card.setAttribute('aria-label', `${tile.title} (opens in a new tab)`);
+  card.setAttribute('aria-label', formatText(texts.openLinkLabel, { title: tile.title }));
   return card;
 }
-function renderNews(item) {
+function renderNews(item, texts) {
   const card = link(item.url, `${linkClass} news-card p-6`);
-  card.append(element('p', 'eyebrow mb-4', item.label || 'NEWS'), element('h3', 'mb-2 text-xl font-semibold tracking-tight', item.title), element('p', 'text-sm leading-relaxed text-stone-500 dark:text-stone-400', item.text || ''));
+  card.append(element('p', 'eyebrow mb-4', item.label ?? texts.newsLabel), element('h3', 'mb-2 text-xl font-semibold tracking-tight', item.title), element('p', 'text-sm leading-relaxed text-stone-500 dark:text-stone-400', item.text || ''));
   const bottom = element('div', 'mt-6 flex items-center justify-between text-xs text-stone-500 dark:text-stone-400');
-  bottom.append(element('span', '', item.date || 'Worth a look'), element('span', 'text-lg', '↗'));
+  bottom.append(element('span', '', item.date ?? texts.newsDate), element('span', 'text-lg', texts.linkIcon || ''));
   card.append(bottom);
-  card.setAttribute('aria-label', `${item.title} (opens in a new tab)`);
+  card.setAttribute('aria-label', formatText(texts.openLinkLabel, { title: item.title }));
   return card;
 }
-byId('date').textContent = new Intl.DateTimeFormat(undefined, { weekday: 'long', month: 'long', day: 'numeric' }).format(new Date());
 try {
   const response = await fetch('/config.json', { cache: 'no-store' });
   if (!response.ok) throw new Error('Configuration unavailable');
   const config = validateConfig(await response.json());
-  for (const field of ['brand', 'eyebrow', 'heading', 'intro', 'footer']) {
-    if (config[field]) byId(field).textContent = config[field];
+  const texts = config.texts || {};
+  for (const node of document.querySelectorAll('[data-copy]')) {
+    node.textContent = config[node.dataset.copy] ?? texts[node.dataset.copy] ?? '';
   }
-  document.title = config.brand || 'Launchpad';
-  byId('news').replaceChildren(...config.news.map(renderNews));
+  document.title = texts.pageTitle || '';
+  document.documentElement.lang = texts.language || '';
+  document.querySelector('meta[name="description"]').content = texts.description || '';
+  byId('search').placeholder = texts.searchPlaceholder || '';
+  byId('date').textContent = texts.dateLocale ? new Intl.DateTimeFormat(texts.dateLocale, { weekday: 'long', month: 'long', day: 'numeric' }).format(new Date()) : '';
+  byId('news').replaceChildren(...config.news.map((item) => renderNews(item, texts)));
   const render = () => {
-    const query = byId('search').value.trim().toLocaleLowerCase();
-    const tiles = config.tiles.filter((tile) => `${tile.title} ${tile.text || ''}`.toLocaleLowerCase().includes(query));
-    byId('tiles').replaceChildren(...tiles.map(renderTile));
-    byId('tile-count').textContent = `${tiles.length} shortcuts. A world of possibilities.`;
-    byId('empty').hidden = tiles.length > 0;
+    const groups = filterTileGroups(config, byId('search').value);
+    byId('tiles').replaceChildren(...groups.map((group) => {
+      const section = element('section', 'mb-8');
+      if (group.title) section.append(element('h3', 'mb-4 text-xl font-semibold tracking-tight', group.title));
+      const grid = element('div', 'grid gap-5 sm:grid-cols-2 lg:grid-cols-3');
+      grid.append(...group.tiles.map((tile) => renderTile(tile, texts)));
+      section.append(grid);
+      return section;
+    }));
+    const count = groups.reduce((total, group) => total + group.tiles.length, 0);
+    byId('tile-count').textContent = formatText(count === 1 ? texts.tileCountOne : texts.tileCount, { count });
+    byId('empty').hidden = count > 0;
   };
   byId('search').addEventListener('input', render);
   render();
   byId('status').textContent = '';
 } catch {
-  byId('status').textContent = 'We couldn’t load your launchpad. Check config.json and refresh to try again.';
+  byId('status').textContent = byId('status').dataset.error;
 }

@@ -15,6 +15,12 @@ test('serves the page, configuration, images, and health check', () => withServe
     assert.ok(response.headers.get('content-type').startsWith(type));
   }
 }));
+
+test('renders JSON copy into the initial page including no-script and failure messages', () => withServer(async (base) => {
+  const config = await (await fetch(base + '/config.json')).json();
+  const html = await (await fetch(base)).text();
+  assert.ok(html.includes(`<title>${config.texts.pageTitle}</title>`) && html.includes(config.texts.noScript) && html.includes(config.texts.loadError) && !html.includes('{{'));
+}));
 test('does not expose server source, traversal paths or missing files', () => withServer(async (base) => {
   for (const path of ['/server.js', '/%2e%2e%2fserver.js', '/missing', '/images/']) {
     assert.equal((await fetch(base + path)).status, 404);

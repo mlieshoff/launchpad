@@ -2,6 +2,7 @@ import http from 'node:http';
 import { readFile, realpath } from 'node:fs/promises';
 import { extname, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { renderPage } from './public/config.js';
 
 const publicRoot = fileURLToPath(new URL('./public/', import.meta.url));
 const types = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.ico': 'image/x-icon' };
@@ -33,7 +34,16 @@ export function createServer(root = publicRoot) {
         res.writeHead(404).end();
         return;
       }
-      const body = await readFile(canonical);
+      let body = await readFile(canonical);
+      if (canonical === resolve(canonicalRoot, 'index.html')) {
+        const configPath = await realpath(resolve(canonicalRoot, 'config.json'));
+        if (!configPath.startsWith(canonicalRoot + sep)) {
+          res.writeHead(404).end();
+          return;
+        }
+        const config = JSON.parse(await readFile(configPath, 'utf8'));
+        body = renderPage(body.toString('utf8'), config);
+      }
       res.writeHead(200, { 'Content-Type': `${types[extname(path)] || 'application/octet-stream'}; charset=utf-8`, 'Cache-Control': 'no-cache' });
       res.end(req.method === 'HEAD' ? undefined : body);
     } catch (error) {

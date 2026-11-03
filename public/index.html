@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{language}}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
-  <meta name="description" content="Your daily starting point. News, useful links, and a little inspiration.">
-  <title>Launchpad</title>
+  <meta name="description" content="{{description}}">
+  <title>{{pageTitle}}</title>
   <link rel="icon" href="/images/mark.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/styles.css">
   <script type="module" src="/app.js"></script>
@@ -13,27 +13,27 @@
 <body class="min-h-screen bg-stone-50 text-stone-900 antialiased dark:bg-stone-950 dark:text-stone-100">
   <header class="border-b border-stone-200 dark:border-stone-800">
     <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
-      <a href="/" class="flex items-center gap-3 font-bold tracking-tight"><img src="/images/mark.svg" width="32" height="32" alt=""><span id="brand">launchpad</span></a>
-      <span class="text-xs text-stone-500 dark:text-stone-400">A little less searching. A little more doing.</span>
+      <a href="/" class="flex items-center gap-3 font-bold tracking-tight"><img src="/images/mark.svg" width="32" height="32" alt=""><span id="brand" data-copy="brand">{{brand}}</span></a>
+      <span class="text-xs text-stone-500 dark:text-stone-400" data-copy="tagline">{{tagline}}</span>
     </div>
   </header>
   <main class="mx-auto max-w-6xl px-6 pb-20 pt-12 sm:pt-16">
     <div class="mb-10 flex flex-wrap items-end justify-between gap-6">
-      <div><p class="eyebrow mb-3" id="eyebrow">YOUR DAILY STARTING POINT</p><h1 id="heading" class="text-4xl font-semibold tracking-tight sm:text-5xl">Good things start here.</h1><p id="intro" class="mt-4 max-w-xl text-stone-500 dark:text-stone-400">A fresh perspective. Your favorite places. All in one little corner of the internet.</p></div>
+      <div><p class="eyebrow mb-3" id="eyebrow" data-copy="eyebrow">{{eyebrow}}</p><h1 id="heading" class="text-4xl font-semibold tracking-tight sm:text-5xl" data-copy="heading">{{heading}}</h1><p id="intro" class="mt-4 max-w-xl text-stone-500 dark:text-stone-400" data-copy="intro">{{intro}}</p></div>
       <p id="date" class="text-sm text-stone-500 dark:text-stone-400"></p>
     </div>
     <section aria-labelledby="news-heading" class="mb-12">
-      <div class="mb-4 flex items-center gap-3"><span class="h-2 w-2 rounded-full bg-emerald-600"></span><h2 id="news-heading" class="eyebrow">ON THE RADAR</h2><span class="text-xs text-stone-400">The latest & the noteworthy</span></div>
+      <div class="mb-4 flex items-center gap-3"><span class="h-2 w-2 rounded-full bg-emerald-600"></span><h2 id="news-heading" class="eyebrow" data-copy="newsHeading">{{newsHeading}}</h2><span class="text-xs text-stone-400" data-copy="newsSubtitle">{{newsSubtitle}}</span></div>
       <div id="news" class="grid gap-4 md:grid-cols-2"></div>
     </section>
     <section aria-labelledby="links-heading">
-      <div class="mb-6 flex flex-wrap items-end justify-between gap-5"><div><h2 id="links-heading" class="text-2xl font-semibold tracking-tight">Your next stop</h2><p id="tile-count" class="mt-1 text-sm text-stone-500 dark:text-stone-400">A few favorites, always within reach.</p></div><label class="search-box flex items-center gap-2 rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm dark:border-stone-700 dark:bg-stone-900"><span aria-hidden="true">⌕</span><span class="sr-only">Filter links</span><input id="search" type="search" placeholder="Find a shortcut…" class="w-44 bg-transparent outline-none"></label></div>
-      <div id="tiles" class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"></div>
-      <p id="empty" hidden class="py-12 text-center text-stone-500">No shortcuts found. Try another search.</p>
+      <div class="mb-6 flex flex-wrap items-end justify-between gap-5"><div><h2 id="links-heading" class="text-2xl font-semibold tracking-tight" data-copy="linksHeading">{{linksHeading}}</h2><p id="tile-count" class="mt-1 text-sm text-stone-500 dark:text-stone-400"></p></div><label class="search-box flex items-center gap-2 rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm dark:border-stone-700 dark:bg-stone-900"><span aria-hidden="true" data-copy="searchIcon">{{searchIcon}}</span><span class="sr-only" data-copy="searchLabel">{{searchLabel}}</span><input id="search" type="search" placeholder="{{searchPlaceholder}}" class="w-44 bg-transparent outline-none"></label></div>
+      <div id="tiles"></div>
+      <p id="empty" hidden class="py-12 text-center text-stone-500" data-copy="empty">{{empty}}</p>
     </section>
-    <p id="status" role="status" class="mt-6 text-sm text-stone-500">Loading your launchpad…</p>
-    <noscript><p>Enable JavaScript to load the configured news and shortcuts.</p></noscript>
+    <p id="status" role="status" class="mt-6 text-sm text-stone-500" data-error="{{loadError}}">{{loading}}</p>
+    <noscript><p>{{noScript}}</p></noscript>
   </main>
-  <footer class="mx-auto flex max-w-6xl flex-wrap justify-between gap-3 border-t border-stone-200 px-6 py-6 text-xs text-stone-500 dark:border-stone-800 dark:text-stone-400"><span id="footer">Made for a more intentional internet.</span><span>Make yourself at home. ↗</span></footer>
+  <footer class="mx-auto flex max-w-6xl flex-wrap justify-between gap-3 border-t border-stone-200 px-6 py-6 text-xs text-stone-500 dark:border-stone-800 dark:text-stone-400"><span id="footer" data-copy="footer">{{footer}}</span><span data-copy="footerNote">{{footerNote}}</span></footer>
 </body>
 </html>
