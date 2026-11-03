@@ -5,15 +5,98 @@
   "intro": "A fresh perspective. Your favorite places. All in one little corner of the internet.",
   "footer": "Made for a more intentional internet.",
   "news": [
-    { "label": "HELLO, WORLD", "title": "A new home for your everyday.", "text": "Meet your launchpad. A quieter, simpler space for the links you love and the things worth knowing.", "date": "Prototype · Welcome aboard", "url": "https://example.com" },
-    { "label": "A LITTLE INSPIRATION", "title": "Stay curious. There’s plenty to discover.", "text": "Take a look at what’s happening in science, culture, and the world around us.", "date": "Discover · Wikipedia", "url": "https://en.wikipedia.org/wiki/Portal:Current_events" }
+    {
+      "label": "HELLO, WORLD",
+      "title": "A new home for your everyday.",
+      "text": "Meet your launchpad. A quieter, simpler space for the links you love and the things worth knowing.",
+      "date": "Prototype · Welcome aboard",
+      "url": "https://example.com"
+    },
+    {
+      "label": "A LITTLE INSPIRATION",
+      "title": "Stay curious. There’s plenty to discover.",
+      "text": "Take a look at what’s happening in science, culture, and the world around us.",
+      "date": "Discover · Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Portal:Current_events"
+    }
   ],
   "tiles": [
-    { "title": "Google", "text": "Follow your curiosity. Find answers, explore ideas, and see where a search takes you.", "image": "/images/google.svg", "url": "https://www.google.com" },
-    { "title": "GitHub", "text": "Build something great. Your next project, contribution, or bright idea starts here.", "image": "/images/github.svg", "url": "https://github.com" },
-    { "title": "Wikipedia", "text": "Fall down a good rabbit hole. A world of knowledge, one fascinating article at a time.", "image": "/images/wikipedia.svg", "url": "https://www.wikipedia.org" },
-    { "title": "YouTube", "text": "Learn a new skill, find your next favorite creator, or simply press play.", "image": "/images/youtube.svg", "url": "https://www.youtube.com" },
-    { "title": "MDN Web Docs", "text": "A trusty companion for the web. Guides, references, and a little developer wisdom.", "image": "/images/mdn.svg", "url": "https://developer.mozilla.org" },
-    { "title": "OpenStreetMap", "text": "Take the scenic route. Discover nearby places and explore a map made by everyone.", "image": "/images/map.svg", "url": "https://www.openstreetmap.org" }
+    {
+      "title": "Google",
+      "text": "Follow your curiosity. Find answers, explore ideas, and see where a search takes you.",
+      "image": "/images/google.svg",
+      "url": "https://www.google.com",
+      "group": "explore"
+    },
+    {
+      "title": "GitHub",
+      "text": "Build something great. Your next project, contribution, or bright idea starts here.",
+      "image": "/images/github.svg",
+      "url": "https://github.com",
+      "group": "build"
+    },
+    {
+      "title": "Wikipedia",
+      "text": "Fall down a good rabbit hole. A world of knowledge, one fascinating article at a time.",
+      "image": "/images/wikipedia.svg",
+      "url": "https://www.wikipedia.org",
+      "group": "explore"
+    },
+    {
+      "title": "YouTube",
+      "text": "Learn a new skill, find your next favorite creator, or simply press play.",
+      "image": "/images/youtube.svg",
+      "url": "https://www.youtube.com",
+      "group": "explore"
+    },
+    {
+      "title": "MDN Web Docs",
+      "text": "A trusty companion for the web. Guides, references, and a little developer wisdom.",
+      "image": "/images/mdn.svg",
+      "url": "https://developer.mozilla.org",
+      "group": "build"
+    },
+    {
+      "title": "OpenStreetMap",
+      "text": "Take the scenic route. Discover nearby places and explore a map made by everyone.",
+      "image": "/images/map.svg",
+      "url": "https://www.openstreetmap.org",
+      "group": "explore"
+    }
+  ],
+  "texts": {
+    "language": "en",
+    "dateLocale": "en-US",
+    "pageTitle": "Launchpad",
+    "description": "Your daily starting point. News, useful links, and a little inspiration.",
+    "tagline": "A little less searching. A little more doing.",
+    "newsHeading": "ON THE RADAR",
+    "newsSubtitle": "The latest & the noteworthy",
+    "linksHeading": "Your next stop",
+    "searchLabel": "Filter links",
+    "searchPlaceholder": "Find a shortcut…",
+    "empty": "No shortcuts found. Try another search.",
+    "loading": "Loading your launchpad…",
+    "loadError": "We couldn’t load your launchpad. Check config.json and refresh to try again.",
+    "noScript": "Enable JavaScript to load the configured news and shortcuts.",
+    "footerNote": "Make yourself at home. ↗",
+    "openLinkLabel": "{title} (opens in a new tab)",
+    "newsLabel": "NEWS",
+    "newsDate": "Worth a look",
+    "tileCountOne": "{count} shortcut. A world of possibilities.",
+    "tileCount": "{count} shortcuts. A world of possibilities.",
+    "ungroupedTitle": "More shortcuts",
+    "linkIcon": "↗",
+    "searchIcon": "⌕"
+  },
+  "groups": [
+    {
+      "id": "explore",
+      "title": "Explore & discover"
+    },
+    {
+      "id": "build",
+      "title": "Build & learn"
+    }
   ]
 }
